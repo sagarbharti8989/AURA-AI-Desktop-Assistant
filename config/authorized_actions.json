@@ -1,0 +1,98 @@
+{
+  "open_app": {
+    "permission": "app_launch",
+    "enabled": true,
+    "description": "Launch a whitelisted desktop application"
+  },
+  "close_app": {
+    "permission": "app_close",
+    "enabled": true,
+    "description": "Gracefully close an application window"
+  },
+  "set_volume": {
+    "permission": "volume_control",
+    "enabled": true,
+    "description": "Set master audio volume level"
+  },
+  "increase_volume": {
+    "permission": "volume_control",
+    "enabled": true,
+    "description": "Increase master audio volume"
+  },
+  "decrease_volume": {
+    "permission": "volume_control",
+    "enabled": true,
+    "description": "Decrease master audio volume"
+  },
+  "mute_audio": {
+    "permission": "volume_control",
+    "enabled": true,
+    "description": "Mute system audio"
+  },
+  "unmute_audio": {
+    "permission": "volume_control",
+    "enabled": true,
+    "description": "Unmute system audio"
+  },
+  "set_brightness": {
+    "permission": "brightness_control",
+    "enabled": true,
+    "description": "Set primary display brightness"
+  },
+  "increase_brightness": {
+    "permission": "brightness_control",
+    "enabled": true,
+    "description": "Increase primary display brightness"
+  },
+  "decrease_brightness": {
+    "permission": "brightness_control",
+    "enabled": true,
+    "description": "Decrease primary display brightness"
+  },
+  "get_wifi_status": {
+    "permission": "wifi_control",
+    "enabled": true,
+    "description": "Check current Wi-Fi adapter status"
+  },
+  "enable_wifi": {
+    "permission": "wifi_control",
+    "enabled": true,
+    "description": "Enable Wi-Fi adapter"
+  },
+  "disable_wifi": {
+    "permission": "wifi_control",
+    "enabled": true,
+    "description": "Disable Wi-Fi adapter"
+  },
+  "get_bluetooth_status": {
+    "permission": "bluetooth_control",
+    "enabled": true,
+    "description": "Check Bluetooth radio status"
+  },
+  "enable_bluetooth": {
+    "permission": "bluetooth_control",
+    "enabled": true,
+    "description": "Turn on Bluetooth radio"
+  },
+  "disable_bluetooth": {
+    "permission": "bluetooth_control",
+    "enabled": true,
+    "description": "Turn off Bluetooth radio"
+  },
+  "lock_system": {
+    "permission": "system_control",
+    "enabled": true,
+    "description": "Lock Windows workstation session"
+  },
+  "check_battery": {
+    "permission": "system_control",
+    "enabled": true,
+    "description": "Query battery status and power source"
+  },
+  "take_screenshot": {
+    "permission": "system_control",
+    "enabled": true,
+    "description": "Capture screen to clipboard or app directory"
+  }
+}
+

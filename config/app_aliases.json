@@ -1,0 +1,53 @@
+{
+  "chrome": {
+    "name": "Google Chrome",
+    "executable": "chrome.exe",
+    "fallback_paths": [
+      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+    ]
+  },
+  "notepad": {
+    "name": "Notepad",
+    "executable": "notepad.exe",
+    "fallback_paths": [
+      "C:\\Windows\\System32\\notepad.exe"
+    ]
+  },
+  "calculator": {
+    "name": "Calculator",
+    "executable": "calc.exe",
+    "fallback_paths": [
+      "C:\\Windows\\System32\\calc.exe"
+    ]
+  },
+  "vscode": {
+    "name": "Visual Studio Code",
+    "executable": "code.cmd",
+    "fallback_paths": [
+      "C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+    ]
+  },
+  "edge": {
+    "name": "Microsoft Edge",
+    "executable": "msedge.exe",
+    "fallback_paths": [
+      "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+    ]
+  },
+  "explorer": {
+    "name": "File Explorer",
+    "executable": "explorer.exe",
+    "fallback_paths": [
+      "C:\\Windows\\explorer.exe"
+    ]
+  },
+  "task manager": {
+    "name": "Task Manager",
+    "executable": "taskmgr.exe",
+    "fallback_paths": [
+      "C:\\Windows\\System32\\taskmgr.exe"
+    ]
+  }
+}
+
