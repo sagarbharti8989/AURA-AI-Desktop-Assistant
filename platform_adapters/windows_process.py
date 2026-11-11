@@ -50,16 +50,22 @@ class WindowsProcessAdapter:
 
     def launch_app(self, app_name: str) -> bool:
         """Launches a whitelisted application."""
+        key = app_name.lower().strip()
+        entry = config.app_aliases.get(key, {})
         exe_path = self.resolve_executable(app_name)
         if not exe_path:
             raise ActionExecutionError(
                 f"Application '{app_name}' is not in the approved application list or not installed."
             )
 
+        arguments = entry.get("arguments", [])
+        if not isinstance(arguments, list) or not all(isinstance(arg, str) for arg in arguments):
+            raise ActionExecutionError(f"Invalid launch arguments configured for '{app_name}'.")
+
         try:
             logger.info(f"Launching approved executable: {exe_path}")
             # Launch without shell=True to prevent shell injection
-            subprocess.Popen([exe_path], close_fds=True)
+            subprocess.Popen([exe_path, *arguments], close_fds=True)
             return True
         except Exception as e:
             logger.error(f"Failed to launch '{app_name}': {e}")
@@ -70,8 +76,13 @@ class WindowsProcessAdapter:
         Finds top-level windows matching the application name and posts WM_CLOSE.
         Does NOT use taskkill /F to avoid losing unsaved data.
         """
+        key = app_name.lower().strip()
+        entry = config.app_aliases.get(key, {})
         exe_path = self.resolve_executable(app_name)
-        target_name = (os.path.basename(exe_path) if exe_path else app_name).lower()
+        target_name = str(
+            entry.get("window_title")
+            or (os.path.basename(exe_path) if exe_path else app_name)
+        ).lower()
         if target_name.endswith(".exe"):
             target_name = target_name[:-4]
 
@@ -99,13 +110,14 @@ class WindowsProcessAdapter:
 
         if not closed_any:
             # Fallback: graceful taskkill without /F flag
-            try:
-                proc_name = f"{target_name}.exe"
-                res = subprocess.run(["taskkill", "/IM", proc_name], capture_output=True, text=True, check=False)
-                if res.returncode == 0:
-                    return True
-            except Exception:
-                pass
+            if not entry.get("arguments"):
+                try:
+                    proc_name = f"{target_name}.exe"
+                    res = subprocess.run(["taskkill", "/IM", proc_name], capture_output=True, text=True, check=False)
+                    if res.returncode == 0:
+                        return True
+                except Exception:
+                    pass
             raise ActionExecutionError(f"No running window found for application '{app_name}'.")
 
         return True

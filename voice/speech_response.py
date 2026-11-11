@@ -29,11 +29,19 @@ class SpeechResponse:
         self._queue: queue.Queue = queue.Queue(maxsize=200)
         self._stop_event = threading.Event()
         self._worker_thread: Optional[threading.Thread] = None
+        self._worker_lock = threading.Lock()
         self._start_worker()
 
     def _start_worker(self) -> None:
-        self._worker_thread = threading.Thread(target=self._run_tts_loop, daemon=True)
-        self._worker_thread.start()
+        with self._worker_lock:
+            if self._worker_thread is not None and self._worker_thread.is_alive():
+                return
+            self._worker_thread = threading.Thread(
+                target=self._run_tts_loop,
+                daemon=True,
+                name="AURA-TTS-Worker",
+            )
+            self._worker_thread.start()
 
     # ------------------------------------------------------------------
     # Strategy 1: pyttsx3 save-to-WAV + winsound
@@ -47,6 +55,7 @@ class SpeechResponse:
         Returns True on success.
         """
         tmp_path = None
+        engine = None
         try:
             import pyttsx3
             engine = pyttsx3.init("sapi5")
@@ -59,7 +68,6 @@ class SpeechResponse:
 
             engine.save_to_file(text, tmp_path)
             engine.runAndWait()
-            engine.stop()
 
             # Play the WAV file synchronously
             winsound.PlaySound(tmp_path, winsound.SND_FILENAME)
@@ -69,6 +77,11 @@ class SpeechResponse:
             logger.warning(f"TTS WAV strategy failed: {e}")
             return False
         finally:
+            if engine is not None:
+                try:
+                    engine.stop()
+                except Exception:
+                    pass
             if tmp_path and os.path.exists(tmp_path):
                 try:
                     os.unlink(tmp_path)
@@ -116,10 +129,13 @@ class SpeechResponse:
 
             logger.info(f"TTS Speaking: '{text}'")
 
-            if not self._speak_via_wav(text):
-                self._speak_via_ps1(text)
-
-            self._queue.task_done()
+            try:
+                if not self._speak_via_wav(text):
+                    self._speak_via_ps1(text)
+            except Exception as exc:
+                logger.warning(f"Unexpected TTS failure while speaking queued message: {exc}")
+            finally:
+                self._queue.task_done()
 
     # ------------------------------------------------------------------
     # Public API

@@ -7,6 +7,7 @@ import subprocess
 from typing import Dict, Any
 from utils.logger import logger
 from utils.exceptions import ActionExecutionError
+from utils.elevate import run_as_admin
 
 
 class WindowsBluetoothAdapter:
@@ -16,11 +17,16 @@ class WindowsBluetoothAdapter:
         """Queries Bluetooth service and radio state."""
         try:
             # Query Bluetooth support service status
-            cmd = ["powershell", "-NoProfile", "-Command", "Get-Service -Name bthserv | Select-Object -ExpandProperty Status"]
+            cmd = [
+                "powershell",
+                "-NoProfile",
+                "-Command",
+                "Get-Service -Name bthserv | Select-Object -ExpandProperty Status",
+            ]
             res = subprocess.run(cmd, capture_output=True, text=True, check=False)
             status_str = res.stdout.strip().lower()
 
-            is_running = (status_str == "running")
+            is_running = status_str == "running"
             return {
                 "available": bool(status_str),
                 "state": "enabled" if is_running else "disabled",
@@ -34,13 +40,25 @@ class WindowsBluetoothAdapter:
         """Toggles Bluetooth radio or service."""
         try:
             action = "start" if enable else "stop"
-            cmd = ["powershell", "-NoProfile", "-Command", f"{action.capitalize()}-Service -Name bthserv"]
-            res = subprocess.run(cmd, capture_output=True, text=True, check=False)
+            cmd = [
+                "powershell",
+                "-NoProfile",
+                "-Command",
+                f"{action.capitalize()}-Service -Name bthserv",
+            ]
+            try:
+                res = run_as_admin(cmd)
+            except PermissionError as e:
+                raise ActionExecutionError(str(e)) from e
 
             if res.returncode != 0:
-                raise ActionExecutionError("Bluetooth toggle requires elevated privileges or unsupported radio.")
+                raise ActionExecutionError(
+                    "Bluetooth toggle requires elevated privileges or unsupported radio."
+                )
 
             return True
+        except ActionExecutionError:
+            raise
         except Exception as e:
             logger.error(f"Bluetooth toggle error: {e}")
             raise ActionExecutionError(f"Could not modify Bluetooth state: {e}") from e

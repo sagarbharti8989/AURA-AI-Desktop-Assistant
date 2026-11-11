@@ -150,6 +150,10 @@ AURA/
   - *"Open Chrome"*
   - *"Open Notepad"*
   - *"Close Chrome"*
+  - *"Open Paint"*
+  - *"Open Windows Terminal"*
+  - *"Open VLC media player"*
+  - *"Open Settings"*
 - **Connectivity:**
   - *"Wi-Fi status"*
   - *"Turn on Wi-Fi"* / *"Turn off Wi-Fi"*
@@ -171,4 +175,3 @@ AURA/
    - Response: *"I do not have access to personal files."*
 3. **No Shell Injections:**
    - Subprocesses are invoked strictly as argument vectors with whitelisted executable binaries without `shell=True`.
-

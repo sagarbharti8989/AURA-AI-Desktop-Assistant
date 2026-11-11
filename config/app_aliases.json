@@ -48,6 +48,66 @@
     "fallback_paths": [
       "C:\\Windows\\System32\\taskmgr.exe"
     ]
+  },
+  "paint": {
+    "name": "Paint",
+    "executable": "mspaint.exe",
+    "fallback_paths": [
+      "C:\\Windows\\System32\\mspaint.exe"
+    ]
+  },
+  "windows terminal": {
+    "name": "Windows Terminal",
+    "executable": "wt.exe",
+    "fallback_paths": [
+      "%LOCALAPPDATA%\\Microsoft\\WindowsApps\\wt.exe"
+    ]
+  },
+  "terminal": {
+    "name": "Windows Terminal",
+    "executable": "wt.exe",
+    "fallback_paths": [
+      "%LOCALAPPDATA%\\Microsoft\\WindowsApps\\wt.exe"
+    ]
+  },
+  "vlc": {
+    "name": "VLC media player",
+    "executable": "vlc.exe",
+    "fallback_paths": [
+      "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+      "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
+      "%LOCALAPPDATA%\\Programs\\VideoLAN\\VLC\\vlc.exe"
+    ]
+  },
+  "vlc media player": {
+    "name": "VLC media player",
+    "executable": "vlc.exe",
+    "fallback_paths": [
+      "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+      "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
+      "%LOCALAPPDATA%\\Programs\\VideoLAN\\VLC\\vlc.exe"
+    ]
+  },
+  "settings": {
+    "name": "Windows Settings",
+    "executable": "explorer.exe",
+    "arguments": [
+      "ms-settings:"
+    ],
+    "window_title": "Settings",
+    "fallback_paths": [
+      "C:\\Windows\\explorer.exe"
+    ]
+  },
+  "windows settings": {
+    "name": "Windows Settings",
+    "executable": "explorer.exe",
+    "arguments": [
+      "ms-settings:"
+    ],
+    "window_title": "Settings",
+    "fallback_paths": [
+      "C:\\Windows\\explorer.exe"
+    ]
   }
 }
-
